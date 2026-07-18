@@ -11,5 +11,5 @@ import java.time.LocalDate;
 
 public record DecathlonEventRequestDto(@NotBlank String athleteName,
                                        @NotNull DecathlonEvent event,
-                                       @Positive @NotNull BigDecimal perfomanceValue,
+                                       @Positive @NotNull BigDecimal performanceValue,
                                        @NotNull @PastOrPresent LocalDate resultDate) {}

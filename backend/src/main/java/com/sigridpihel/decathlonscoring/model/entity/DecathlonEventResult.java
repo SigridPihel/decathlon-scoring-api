@@ -28,7 +28,7 @@ public class DecathlonEventResult {
     private DecathlonEvent event;
 
     @Column(nullable = false)
-    private BigDecimal perfomanceValue;
+    private BigDecimal performanceValue;
 
     @Column(nullable = false)
     private LocalDate resultDate;

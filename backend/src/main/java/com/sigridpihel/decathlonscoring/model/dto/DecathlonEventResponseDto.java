@@ -8,9 +8,11 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
-public record DecathlonEventResponseDto(String athleteName,
+public record DecathlonEventResponseDto(UUID id,
+                                        String athleteName,
                                         DecathlonEvent event,
-                                        BigDecimal perfomanceValue,
+                                        BigDecimal performanceValue,
                                         LocalDate resultDate,
                                         Integer points) {}
