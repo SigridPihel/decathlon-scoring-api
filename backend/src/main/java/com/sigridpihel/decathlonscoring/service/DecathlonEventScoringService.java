@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DecathlonEventService {
+public class DecathlonEventScoringService {
 
     private final DecathlonEventResultRepository decathlonEventResultRepository;
     private final DecathlonEventMapper decathlonEventMapper;
