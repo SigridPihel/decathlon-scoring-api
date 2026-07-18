@@ -32,4 +32,7 @@ public class DecathlonEventResult {
 
     @Column(nullable = false)
     private LocalDate resultDate;
+
+    @Column(nullable = false)
+    private Integer points;
 }
