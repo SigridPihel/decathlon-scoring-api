@@ -1,6 +1,7 @@
 package com.sigridpihel.decathlonscoring.model.dto;
 
 import com.sigridpihel.decathlonscoring.model.enumeration.DecathlonEvent;
+import com.sigridpihel.decathlonscoring.model.enumeration.PerformanceUnit;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,4 +12,5 @@ public record DecathlonEventResponseDto(UUID id,
                                         DecathlonEvent event,
                                         BigDecimal performanceValue,
                                         LocalDate resultDate,
-                                        Integer points) {}
+                                        Integer points,
+                                        PerformanceUnit unit) {}

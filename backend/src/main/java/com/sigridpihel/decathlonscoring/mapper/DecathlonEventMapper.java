@@ -24,6 +24,7 @@ public class DecathlonEventMapper {
                 entity.getEvent(),
                 entity.getPerformanceValue(),
                 entity.getResultDate(),
-                entity.getPoints());
+                entity.getPoints(),
+                entity.getEvent().getUnit());
     }
 }
