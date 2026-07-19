@@ -1,4 +1,4 @@
-package com.example.decathlonscoring;
+package com.sigridpihel.decathlonscoring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
