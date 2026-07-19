@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Slf4j
 @Service
@@ -26,5 +28,9 @@ public class DecathlonEventScoringService {
         resultEntity = decathlonEventResultRepository.save(resultEntity);
         log.info("{} got {} points in {}", resultEntity.getAthleteName(), points, resultEntity.getEvent());
         return decathlonEventMapper.toDto(resultEntity);
+    }
+
+    public List<DecathlonEventResponseDto> findAll() {
+        return decathlonEventResultRepository.findAll().stream().map(decathlonEventMapper::toDto).toList();
     }
 }

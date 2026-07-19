@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/decathlon-results")
@@ -17,7 +19,13 @@ public class DecathlonEventScoringController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DecathlonEventResponseDto create (@Valid @RequestBody DecathlonEventRequestDto request) {
+    public DecathlonEventResponseDto create(@Valid @RequestBody DecathlonEventRequestDto request) {
         return decathlonEventScoringService.create(request);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<DecathlonEventResponseDto> list() {
+        return decathlonEventScoringService.findAll();
     }
 }
