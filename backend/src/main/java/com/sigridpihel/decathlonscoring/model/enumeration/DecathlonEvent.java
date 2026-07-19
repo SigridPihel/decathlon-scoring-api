@@ -18,8 +18,8 @@ public enum DecathlonEvent {
     JAVELIN_THROW(10.14, 7, 1.08, EventType.FIELD),
     RUN_1500M(0.03768, 480, 1.85, EventType.TRACK);
 
-    private final double a;
-    private final double b;
-    private final double c;
+    private final double a_constant;
+    private final double b_constant;
+    private final double c_constant;
     private final EventType type;
 }

@@ -11,16 +11,16 @@ import java.math.BigDecimal;
 public class PointsCalculator {
 
     public Integer calculateEventPoints(DecathlonEvent decathlonEvent, BigDecimal performanceValue) {
-        double a = decathlonEvent.getA();
-        double b = decathlonEvent.getB();
-        double c = decathlonEvent.getC();
+        double a_constant = decathlonEvent.getA_constant();
+        double b_constant = decathlonEvent.getB_constant();
+        double c_constant = decathlonEvent.getC_constant();
         double performanceAsDouble = performanceValue.doubleValue();
 
         EventType event = decathlonEvent.getType();
 
         return switch (event) {
-            case TRACK -> calculateTrackPoints(a, b, c, performanceAsDouble);
-            case FIELD -> calculateFieldPoints(a, b, c, performanceAsDouble);
+            case TRACK -> calculateTrackPoints(a_constant, b_constant, c_constant, performanceAsDouble);
+            case FIELD -> calculateFieldPoints(a_constant, b_constant, c_constant, performanceAsDouble);
         };
     }
 
@@ -28,6 +28,7 @@ public class PointsCalculator {
         if (p - b <= 0) {
             return 0;
         }
+        // the result is always rounded down to the nearest whole integer
         return (int) Math.floor(a * Math.pow(p - b, c));
     }
 
@@ -35,6 +36,7 @@ public class PointsCalculator {
         if (b - p <= 0) {
             return 0;
         }
+        // the result is always rounded down to the nearest whole integer
         return (int) Math.floor(a * Math.pow(b - p, c));
     }
 }
