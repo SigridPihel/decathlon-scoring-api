@@ -1,4 +1,6 @@
 package com.sigridpihel.decathlonscoring.exception;
 
-public record ErrorResponse(String message, String timestamp) {
+import java.util.Map;
+
+public record ErrorResponse(String message, String timestamp, Map<String, String> fieldErrors) {
 }
