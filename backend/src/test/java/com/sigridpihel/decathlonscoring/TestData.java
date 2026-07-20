@@ -8,6 +8,8 @@ import com.sigridpihel.decathlonscoring.model.enumeration.PerformanceUnit;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class TestData {
@@ -31,7 +33,28 @@ public class TestData {
                 unit);
     }
 
+    public static DecathlonEventResponseDto createDecathlonEventResponseDto(String athleteName) {
+        return new DecathlonEventResponseDto(
+                decathlonEventResultId,
+                athleteName,
+                event,
+                performanceValue,
+                resultDate,
+                points,
+                unit);
+    }
+
     public static DecathlonEventResult createDecathlonEventResult() {
+        DecathlonEventResult resultEntity = new DecathlonEventResult();
+        resultEntity.setId(decathlonEventResultId);
+        resultEntity.setAthleteName(athleteName);
+        resultEntity.setEvent(event);
+        resultEntity.setPerformanceValue(performanceValue);
+        resultEntity.setResultDate(resultDate);
+        return resultEntity;
+    }
+
+    public static DecathlonEventResult createDecathlonEventResult(String athleteName) {
         DecathlonEventResult resultEntity = new DecathlonEventResult();
         resultEntity.setId(decathlonEventResultId);
         resultEntity.setAthleteName(athleteName);
@@ -44,4 +67,13 @@ public class TestData {
     public static DecathlonEventRequestDto createDecathlonEventRequestDto() {
         return new DecathlonEventRequestDto(athleteName, event, performanceValue, resultDate);
     }
+
+    public static List<DecathlonEventResult> createListOfDecathlonEventResult(int numberOfEntities) {
+        List<DecathlonEventResult> result = new ArrayList<>();
+        for (int i = 0; i < numberOfEntities; i++) {
+            result.add(createDecathlonEventResult(athleteName + i));
+        }
+        return result;
+    }
+
 }

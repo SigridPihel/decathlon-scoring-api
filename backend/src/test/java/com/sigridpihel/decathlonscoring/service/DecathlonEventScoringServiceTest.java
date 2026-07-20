@@ -13,7 +13,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.sigridpihel.decathlonscoring.TestData.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -55,7 +59,7 @@ public class DecathlonEventScoringServiceTest {
     }
 
     @Test
-    void shouldReturnErrorStatus500_whenSavingToDatabaseFails() {
+    void shouldThrowException_whenSavingToDatabaseFails() {
         DecathlonEventRequestDto request = createDecathlonEventRequestDto();
         DecathlonEventResult resultEntity = createDecathlonEventResult();
         Integer points = TestData.points;
@@ -69,5 +73,45 @@ public class DecathlonEventScoringServiceTest {
         verify(decathlonEventMapper).toEntity(request);
         verify(decathlonEventResultRepository).save(resultEntity);
         verify(decathlonEventMapper, never()).toDto(any());
+    }
+
+    @Test
+    void shouldReturnListOfDecathlonEventResponseDto_whenResultsExist() {
+        List<DecathlonEventResult>  listOfDecathlonEventResult = createListOfDecathlonEventResult(2);
+        List<DecathlonEventResponseDto> listOfDecathlonEventResponseDto = new ArrayList<>();
+
+        when(decathlonEventResultRepository.findAll()).thenReturn(listOfDecathlonEventResult);
+        for (DecathlonEventResult decathlonEventResult : listOfDecathlonEventResult) {
+            DecathlonEventResponseDto decathlonEventResponseDto = createDecathlonEventResponseDto(decathlonEventResult.getAthleteName());
+            listOfDecathlonEventResponseDto.add(decathlonEventResponseDto);
+            when(decathlonEventMapper.toDto(decathlonEventResult)).thenReturn(decathlonEventResponseDto);
+        }
+
+        List<DecathlonEventResponseDto> result = decathlonEventScoringService.findAll();
+
+        assertThat(result).hasSize(2);
+        assertThat(result).isEqualTo(listOfDecathlonEventResponseDto);
+        verify(decathlonEventResultRepository).findAll();
+        verify(decathlonEventMapper, times(2)).toDto(any());
+    }
+
+    @Test
+    void shouldReturnEmptyList_whenNoResultsExist() {
+        List<DecathlonEventResult>  listOfDecathlonEventResult = createListOfDecathlonEventResult(0);
+        List<DecathlonEventResponseDto> listOfDecathlonEventResponseDto = new ArrayList<>();
+
+        when(decathlonEventResultRepository.findAll()).thenReturn(listOfDecathlonEventResult);
+        for (DecathlonEventResult decathlonEventResult : listOfDecathlonEventResult) {
+            DecathlonEventResponseDto decathlonEventResponseDto = createDecathlonEventResponseDto(decathlonEventResult.getAthleteName());
+            listOfDecathlonEventResponseDto.add(decathlonEventResponseDto);
+            when(decathlonEventMapper.toDto(decathlonEventResult)).thenReturn(decathlonEventResponseDto);
+        }
+
+        List<DecathlonEventResponseDto> result = decathlonEventScoringService.findAll();
+
+        assertThat(result).hasSize(0);
+        assertThat(result).isEqualTo(listOfDecathlonEventResponseDto);
+        verify(decathlonEventResultRepository).findAll();
+        verify(decathlonEventMapper, times(0)).toDto(any());
     }
 }
