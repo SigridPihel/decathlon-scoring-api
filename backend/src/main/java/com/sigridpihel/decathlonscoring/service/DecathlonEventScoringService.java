@@ -31,6 +31,7 @@ public class DecathlonEventScoringService {
     }
 
     public List<DecathlonEventResponseDto> findAll() {
+        log.info("Fetching all decathlon event results");
         return decathlonEventResultRepository.findAll().stream().map(decathlonEventMapper::toDto).toList();
     }
 }
