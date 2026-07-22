@@ -15,3 +15,7 @@ services:
       - postgres
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/decathlon
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:80"
