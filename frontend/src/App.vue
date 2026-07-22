@@ -22,20 +22,18 @@ onMounted(async() => {
 <template>
 
   <div class="container">
-    <div class="header">
-      <h1>Decathlon Results</h1>
-      <button @click="toggleForm" >Add result</button>
-    </div>
+    <h1>Decathlon Results</h1>
+    <button @click="toggleForm" >Add result</button>
 
     <div class="content">
       <ResultsTable :results="results"/>
     </div>
   </div>
 
-
   <div v-if="showForm">
     Form goes here
   </div>
+
 </template>
 
 <style scoped>
@@ -45,16 +43,21 @@ onMounted(async() => {
   align-items: center;
 }
 
-header {
-  grid-column: 2;
-}
-
 h1 {
   grid-column: 2;
+  grid-row: 1;
+  text-align: center;
 }
 
 button {
   grid-column: 3;
   justify-self: right;
+  grid-row: 1
 }
+
+.content {
+  grid-column: 2;
+  grid-row: 2;
+}
+
 </style>

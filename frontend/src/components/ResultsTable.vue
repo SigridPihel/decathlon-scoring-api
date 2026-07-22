@@ -35,4 +35,12 @@ defineProps<{ results: Result[] }>()
   </table>
 </template>
 
-<style scoped></style>
+<style scoped>
+th, td {
+  padding: 0.5rem 1rem;
+}
+
+table {
+  margin: 0 auto;
+}
+</style>
