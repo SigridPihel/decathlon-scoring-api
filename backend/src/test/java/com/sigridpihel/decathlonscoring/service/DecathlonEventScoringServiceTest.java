@@ -72,7 +72,7 @@ public class DecathlonEventScoringServiceTest {
 
         verify(decathlonEventMapper).toEntity(request);
         verify(decathlonEventResultRepository).save(resultEntity);
-        verify(decathlonEventMapper, never()).toDto(any());
+        verify(decathlonEventMapper, never()).toDto(any(DecathlonEventResult.class));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class DecathlonEventScoringServiceTest {
         assertThat(result).hasSize(2);
         assertThat(result).isEqualTo(listOfDecathlonEventResponseDto);
         verify(decathlonEventResultRepository).findAll();
-        verify(decathlonEventMapper, times(2)).toDto(any());
+        verify(decathlonEventMapper, times(2)).toDto(any(DecathlonEventResult.class));
     }
 
     @Test
@@ -112,6 +112,6 @@ public class DecathlonEventScoringServiceTest {
         assertThat(result).hasSize(0);
         assertThat(result).isEqualTo(listOfDecathlonEventResponseDto);
         verify(decathlonEventResultRepository).findAll();
-        verify(decathlonEventMapper, times(0)).toDto(any());
+        verify(decathlonEventMapper, times(0)).toDto(any(DecathlonEventResult.class));
     }
 }

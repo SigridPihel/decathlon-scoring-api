@@ -1,8 +1,10 @@
 package com.sigridpihel.decathlonscoring.mapper;
 
+import com.sigridpihel.decathlonscoring.model.dto.DecathlonEventDto;
 import com.sigridpihel.decathlonscoring.model.dto.DecathlonEventRequestDto;
 import com.sigridpihel.decathlonscoring.model.dto.DecathlonEventResponseDto;
 import com.sigridpihel.decathlonscoring.model.entity.DecathlonEventResult;
+import com.sigridpihel.decathlonscoring.model.enumeration.DecathlonEvent;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,5 +28,12 @@ public class DecathlonEventMapper {
                 entity.getResultDate(),
                 entity.getPoints(),
                 entity.getEvent().getUnit());
+    }
+
+    public DecathlonEventDto toDto(DecathlonEvent event) {
+        return new DecathlonEventDto(
+                event.name(),
+                event.getDisplayName(),
+                event.getUnit());
     }
 }
