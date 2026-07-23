@@ -7,3 +7,9 @@ export interface Result {
     points: number
     unit: string
 }
+
+export interface EventOption {
+    event: string
+    displayName: string
+    unit: string
+}

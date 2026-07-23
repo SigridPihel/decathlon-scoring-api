@@ -1,20 +1,24 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue'
-import type { Result } from "./types"
+import type {EventOption, Result} from "./types"
 import ResultsTable from "@/components/ResultsTable.vue";
 import axios from "axios";
+import ResultForm from "@/components/ResultForm.vue";
 
 const showForm = ref(false)
 const results = ref<Result[]>([])
+const events = ref<EventOption[]>([])
 
 function toggleForm() {
   showForm.value = !showForm.value
 }
 
 onMounted(async() => {
-  const response = await axios.get('http://localhost:8080/api/decathlon-results')
-  results.value = response.data
+  const [resultsResponse, eventsResponse] = await
+      Promise.all([axios.get('http://localhost:8080/api/decathlon-results'), axios.get('http://localhost:8080/api/decathlon-events')])
+  results.value = resultsResponse.data
+  events.value = eventsResponse.data
 })
 
 </script>
@@ -31,7 +35,7 @@ onMounted(async() => {
   </div>
 
   <div v-if="showForm">
-    Form goes here
+    <ResultForm :eventOptions="events"/>
   </div>
 
 </template>
