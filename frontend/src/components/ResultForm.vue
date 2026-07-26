@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import type {EventOption} from "../types";
-import { ref, computed } from "vue";
+import {computed, ref} from "vue";
 
 const props = defineProps<{ eventOptions: EventOption[] }>()
 
@@ -20,6 +20,14 @@ const placeHolderText = computed(() => {
   return event.value ? `Use ${ unitForEvent.value}` : "Enter a value"
 })
 
+const todayDate = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear().toString()
+  const month = (now.getMonth() + 1) > 9 ? (now.getMonth() + 1).toString() : '0' + (now.getMonth() + 1).toString()
+  const day = now.getDate() > 9 ? now.getDate().toString() : '0' + now.getDate().toString()
+  return `${year}-${month}-${day}`
+})
+
 function handleSubmit() {
   const payLoad = {
     athleteName: athleteName.value,
@@ -27,7 +35,6 @@ function handleSubmit() {
     performanceValue: performanceValue.value,
     resultDate: resultDate.value
   }
-  console.log(payLoad)
   emit('createResult', payLoad)
 }
 
@@ -58,10 +65,18 @@ function handleSubmit() {
         :placeholder="placeHolderText"
         v-model="performanceValue"
         required
+        min="0.01"
     >
 
     <label for="date">Date:</label>
-    <input type="date" id="date" name="date" v-model="resultDate" required>
+    <input
+        type="date"
+        id="date"
+        name="date"
+        v-model="resultDate"
+        required
+        :max="todayDate"
+    >
 
     <input type="submit" value="Submit">
   </form>
