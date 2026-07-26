@@ -70,13 +70,13 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 - Only creating and listing results is supported (no edit/delete yet — see Future improvements)
 - Single page: results table + result form next to it (no tabs needed yet)
 - Data persists in PostgreSQL; everything runs via `docker-compose up`
-- **Current status: the result-entry form UI is not finished yet.** The backend fully supports creating results (validated, scored, persisted) and Swagger UI is enabled specifically so results can be added in the meantime — see Setup above. Finishing the form is the immediate next task.
+- **Current status: the result-entry form is built and working** (create + list flow functional end-to-end). One known gap: a failed submission (e.g. backend validation error) is currently only logged to the console, not shown to the user — see Future improvements. Swagger UI remains available as an alternative way to add results — see Setup above.
 
 ### Future improvements
 
 Roughly in the order I'd tackle them, given more time:
 
-1. **Finish the result-entry form** — local form state, a dropdown fed by the fixed event list, submit handler emitting up to a parent handler that POSTs and refreshes the table.
+1. **Polished error handling in the result-entry form** — the form itself is built (local state, event dropdown, submit handler emitting up to a parent handler that POSTs and updates the table). If the POST fails (e.g. a 400 validation error or unexpected 500 from the backend's `GlobalExceptionHandler`), it's currently only logged to the console — no error is shown to the user yet. A polished version would surface the general error message in a banner, and map the backend's per-field `fieldErrors` onto each specific input.
 2. **Athlete registry** (one cohesive feature, but independently useful in steps):
    - `Athlete` entity + `GET /api/athletes` (optional `?search=`) + `POST /api/athletes`
    - An "Athletes" tab: small add-athlete form + table (name, registered date, distinct events logged)

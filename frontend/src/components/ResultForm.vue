@@ -5,6 +5,8 @@ import { ref, computed } from "vue";
 
 const props = defineProps<{ eventOptions: EventOption[] }>()
 
+const emit = defineEmits(['createResult'])
+
 const athleteName = ref<string>('')
 const event = ref<string>('')
 const performanceValue = ref<number | null>(null)
@@ -18,10 +20,21 @@ const placeHolderText = computed(() => {
   return event.value ? `Use ${ unitForEvent.value}` : "Enter a value"
 })
 
+function handleSubmit() {
+  const payLoad = {
+    athleteName: athleteName.value,
+    event: event.value,
+    performanceValue: performanceValue.value,
+    resultDate: resultDate.value
+  }
+  console.log(payLoad)
+  emit('createResult', payLoad)
+}
+
 </script>
 
 <template>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <label for="name">Athlete's name: </label>
     <input type="text" id="name" v-model="athleteName" required>
 

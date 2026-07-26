@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue'
-import type {EventOption, Result} from "./types"
+import type {EventOption, NewResult, Result} from "./types"
 import ResultsTable from "@/components/ResultsTable.vue";
 import axios from "axios";
 import ResultForm from "@/components/ResultForm.vue";
@@ -12,6 +12,18 @@ const events = ref<EventOption[]>([])
 
 function toggleForm() {
   showForm.value = !showForm.value
+}
+
+async function handleCreateResult(payload: NewResult) {
+  try {
+    const createdResponse = await axios.post('http://localhost:8080/api/decathlon-results', payload)
+    results.value.push(createdResponse.data)
+    showForm.value = !showForm.value
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data?.message)
+    }
+  }
 }
 
 onMounted(async() => {
@@ -29,13 +41,13 @@ onMounted(async() => {
     <h1>Decathlon Results</h1>
     <button @click="toggleForm" >Add result</button>
 
+    <div v-if="showForm">
+      <ResultForm :eventOptions="events" @createResult="handleCreateResult" />
+    </div>
+
     <div class="content">
       <ResultsTable :results="results"/>
     </div>
-  </div>
-
-  <div v-if="showForm">
-    <ResultForm :eventOptions="events"/>
   </div>
 
 </template>
