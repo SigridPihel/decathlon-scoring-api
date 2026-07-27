@@ -51,7 +51,7 @@ Result is truncated (never rounded) and clamped at 0.
 | Javelin | 10.14 | 7 | 1.08 | metres |
 | 1500m | 0.03768 | 480 | 1.85 | seconds |
 
-Each event is also tagged as `TRACK` or `FIELD` (an `EventType` alongside the constants), since the two formulas subtract in opposite directions — the constants alone aren't enough to know which shape to apply. The three jumps (Long Jump, High Jump, Pole Vault) use **centimetres** while the three throws use **metres** — an easy unit slip to make by habit, so it's covered by a dedicated unit-conversion test.
+Each event is also tagged as `TRACK` or `FIELD` (an `EventType` alongside the constants), since the two formulas subtract in opposite directions — the constants alone aren't enough to know which shape to apply. The three jumps (Long Jump, High Jump, Pole Vault) use **centimetres** while the three throws use **metres** — an easy unit slip to make by habit. **Note: the app does no unit conversion at all** — whoever submits a result (the UI or a direct API call) must already provide the value in that event's expected unit; there's currently no test or validation catching a mixed-up unit (e.g. entering metres where centimetres are expected) — see Future improvements.
 
 Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` points, matching this app's actual output.
 
