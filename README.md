@@ -97,8 +97,7 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 15. **A unit test proving truncation, not rounding**: `PointsCalculatorTest`'s existing values don't actually distinguish flooring from standard rounding — none of them use a performance value whose raw calculated result lands just under a whole number (e.g. `X.9-something`), which is the one scenario where flooring and rounding would produce different answers. A proper test needs a hand-picked event/performance combination landing in that range, to actually prove the result is floored rather than coincidentally correct.
 16. **Catching mismatched units on submission**: the app doesn't convert or validate units at all — a result is scored using whatever number is submitted, trusting it's already in that event's expected unit (cm for jumps, metres for throws, seconds for track). There's no test or validation catching an easy mistake like entering `5.008` instead of `500.8` for a long jump. Would need either input validation (e.g. plausible-range checks per event) or, at minimum, a documented/tested example of the failure mode.
 17. **Schema management** — currently Hibernate's `ddl-auto=update`, chosen to keep one fewer new tool in scope under the deadline. With more time (or in a team/production setting) I'd use Liquibase changesets instead, for an explicit, auditable, reversible schema history.
-17. User authentication/authorization — out of scope for a homework assignment like this.
-18. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no benefit to a reviewer who wants one link to review everything.
+18. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no added benefit.
 
 ## API summary
 
