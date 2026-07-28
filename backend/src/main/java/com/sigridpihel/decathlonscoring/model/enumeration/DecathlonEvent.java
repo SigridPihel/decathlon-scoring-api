@@ -18,8 +18,11 @@ public enum DecathlonEvent {
     JAVELIN_THROW(10.14, 7, 1.08, EventType.FIELD, PerformanceUnit.METERS, "Javelin throw"),
     RUN_1500M(0.03768, 480, 1.85, EventType.TRACK, PerformanceUnit.SECONDS, "1500 m");
 
+    // weighing parameter
     private final double aConstant;
+    // baseline parameter
     private final double bConstant;
+    // progression parameter
     private final double cConstant;
     private final EventType type;
     private final PerformanceUnit unit;

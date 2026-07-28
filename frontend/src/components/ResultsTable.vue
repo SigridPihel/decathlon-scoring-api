@@ -1,9 +1,18 @@
 <script setup lang="ts">
 
-import type {Result} from "../types"
+import type {Event, Result} from "../types"
+import {computed} from "vue";
 
-defineProps<{ results: Result[] }>()
+const props = defineProps<{ results: Result[]; events: Event[] }>()
 
+const eventLabels = computed(() => {
+      const transform = (acc: Record<string, string>, currentValue: Event) => {
+        acc[currentValue.event] = currentValue.displayName
+        return acc
+      }
+      return props.events.reduce(transform, {})
+    }
+)
 </script>
 
 <template>
@@ -26,7 +35,7 @@ defineProps<{ results: Result[] }>()
       >
         <td>{{ index + 1 }}</td>
         <td>{{ result.athleteName }}</td>
-        <td>{{ result.event }}</td>
+        <td>{{ eventLabels[result.event] ? eventLabels[result.event] : result.event }}</td>
         <td>{{ result.performanceValue }} {{ result.unit }}</td>
         <td>{{ result.points }}</td>
         <td>{{ result.resultDate }}</td>

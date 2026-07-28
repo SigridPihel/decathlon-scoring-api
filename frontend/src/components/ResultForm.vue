@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import type {EventOption} from "../types";
+import type {Event} from "../types";
 import {computed, ref} from "vue";
 
-const props = defineProps<{ eventOptions: EventOption[] }>()
+const props = defineProps<{ events: Event[] }>()
 
 const emit = defineEmits(['createResult'])
 
@@ -13,7 +13,7 @@ const performanceValue = ref<number | null>(null)
 const resultDate = ref<string>('')
 
 const unitForEvent = computed(() => {
-  return props.eventOptions.find(e => e.event == event.value)?.unit.toLowerCase()
+  return props.events.find(e => e.event == event.value)?.unit.toLowerCase()
 })
 
 const placeHolderText = computed(() => {
@@ -47,9 +47,9 @@ function handleSubmit() {
 
     <label for="events">Selected: </label>
     <select name="events" id="events" v-model="event" required>
-      <option disabled value="">Please select one</option>
+      <option disabled value="">Select event</option>
       <option
-          v-for="eventOption in eventOptions"
+          v-for="eventOption in events"
           :key="eventOption.event"
           :value="eventOption.event"
       >

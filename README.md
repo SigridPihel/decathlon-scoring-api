@@ -85,6 +85,7 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 3. **Attempt-limit enforcement**: 1 attempt for track events (100m, 400m, 110m Hurdles, 1500m), 3 for Long Jump/Shot Put/Discus/Javelin. Until the athlete registry exists, this would count existing results by matching the name string + event — a documented simplification.
 4. **Full CRUD**: `PUT`/`PATCH` and `DELETE` on `/api/decathlon-results/{id}`, plus corresponding UI actions, so a bad entry can be fixed or removed without touching the database directly.
 5. Table filtering (by name/event/date) and sorting in the results table
+5a. Pagination for the results table — currently the frontend fetches and renders every result at once; this doesn't scale as the number of logged results grows.
 6. Frontend unit tests (Vitest + Vue Test Utils) — form validation, table rendering
 7. Controller-layer tests (`@WebMvcTest`) — the existing tests cover the calculation and service layers, but nothing yet proves the HTTP layer itself (routing, `@Valid`, the exception handler) end to end
 8. GitHub Actions CI (tests run on every push)
@@ -97,7 +98,7 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 15. **A unit test proving truncation, not rounding**: `PointsCalculatorTest`'s existing values don't actually distinguish flooring from standard rounding — none of them use a performance value whose raw calculated result lands just under a whole number (e.g. `X.9-something`), which is the one scenario where flooring and rounding would produce different answers. A proper test needs a hand-picked event/performance combination landing in that range, to actually prove the result is floored rather than coincidentally correct.
 16. **Catching mismatched units on submission**: the app doesn't convert or validate units at all — a result is scored using whatever number is submitted, trusting it's already in that event's expected unit (cm for jumps, metres for throws, seconds for track). There's no test or validation catching an easy mistake like entering `5.008` instead of `500.8` for a long jump. Would need either input validation (e.g. plausible-range checks per event) or, at minimum, a documented/tested example of the failure mode.
 17. **Schema management** — currently Hibernate's `ddl-auto=update`, chosen to keep one fewer new tool in scope under the deadline. With more time (or in a team/production setting) I'd use Liquibase changesets instead, for an explicit, auditable, reversible schema history.
-18. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no added benefit.
+18. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no added benefit. **Update:** there are plans to split them into separate repositories later.
 
 ## API summary
 

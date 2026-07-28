@@ -8,7 +8,7 @@ export interface Result {
     unit: string
 }
 
-export interface EventOption {
+export interface Event {
     event: string
     displayName: string
     unit: string

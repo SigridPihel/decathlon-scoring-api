@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue'
-import type {EventOption, NewResult, Result} from "./types"
+import type {Event, NewResult, Result} from "./types"
 import ResultsTable from "@/components/ResultsTable.vue";
 import axios from "axios";
 import ResultForm from "@/components/ResultForm.vue";
 
 const showForm = ref(false)
 const results = ref<Result[]>([])
-const events = ref<EventOption[]>([])
+const events = ref<Event[]>([])
 
 function toggleForm() {
   showForm.value = !showForm.value
@@ -42,11 +42,11 @@ onMounted(async() => {
     <button @click="toggleForm" >Add result</button>
 
     <div v-if="showForm">
-      <ResultForm :eventOptions="events" @createResult="handleCreateResult" />
+      <ResultForm :events="events" @createResult="handleCreateResult" />
     </div>
 
     <div class="content">
-      <ResultsTable :results="results"/>
+      <ResultsTable :events="events" :results="results"/>
     </div>
   </div>
 
