@@ -99,6 +99,8 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 16. **Catching mismatched units on submission**: the app doesn't convert or validate units at all — a result is scored using whatever number is submitted, trusting it's already in that event's expected unit (cm for jumps, metres for throws, seconds for track). There's no test or validation catching an easy mistake like entering `5.008` instead of `500.8` for a long jump. Would need either input validation (e.g. plausible-range checks per event) or, at minimum, a documented/tested example of the failure mode.
 17. **Schema management** — currently Hibernate's `ddl-auto=update`, chosen to keep one fewer new tool in scope under the deadline. With more time (or in a team/production setting) I'd use Liquibase changesets instead, for an explicit, auditable, reversible schema history.
 18. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no added benefit. **Update:** there are plans to split them into separate repositories later.
+19. **A standalone "just calculate points" tool** — a simpler mode on the site for calculating points from a score without logging a full result (no name/date required, purely a calculator).
+20. **An info button showing each event's baseline performance (B constant)** — the "zero-point" mark for that event: a performance threshold (a time or distance) below which an athlete scores no points at all. An athlete has to clear this baseline just to get on the scoreboard for that event.
 
 ## API summary
 
