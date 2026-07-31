@@ -41,8 +41,10 @@ onMounted(async() => {
     <h1>Decathlon Results</h1>
     <button @click="toggleForm" >Add result</button>
 
-    <div v-if="showForm">
-      <ResultForm :events="events" @createResult="handleCreateResult" />
+    <div v-if="showForm" class="overlay">
+      <div class="modal">
+        <ResultForm :events="events" @createResult="handleCreateResult" />
+      </div>
     </div>
 
     <div class="content">
@@ -74,6 +76,24 @@ button {
 .content {
   grid-column: 2;
   grid-row: 2;
+}
+
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.modal {
+  background-color: white;
+  width: 40%;
 }
 
 </style>
