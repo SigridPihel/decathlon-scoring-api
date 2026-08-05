@@ -71,7 +71,6 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 - Single page: results table + result form next to it (no tabs needed yet)
 - Data persists in PostgreSQL; everything runs via `docker-compose up`
 - **Current status: the result-entry form is built and working** (create + list flow functional end-to-end). One known gap: a failed submission (e.g. backend validation error) is currently only logged to the console, not shown to the user — see Future improvements. Swagger UI remains available as an alternative way to add results — see Setup above.
-- **Visual polish is still in progress.** Functionality (fetching, creating, validating) is done, but the UI's look and feel isn't finished yet — actively being worked on now.
 
 ### Future improvements
 
@@ -100,6 +99,7 @@ Verified example: 100m in 10.83s → `25.4347 × (18 − 10.83)^1.81 ≈ 899` po
 17. **Separate repos for frontend and backend** — deliberately kept as one repo instead. Two repos would mean two READMEs, two git histories, and CORS/docker-compose wiring across repos, for no added benefit. **Update:** there are plans to split them into separate repositories later.
 18. **A standalone "just calculate points" tool** — a simpler mode on the site for calculating points from a score without logging a full result (no name/date required, purely a calculator).
 19. **An info button showing each event's baseline performance (B constant)** — the "zero-point" mark for that event: a performance threshold (a time or distance) below which an athlete scores no points at all. An athlete has to clear this baseline just to get on the scoreboard for that event.
+20. **Improve the overall UI look and feel** — the interface is functional but visually basic; more polished styling and layout would improve the experience.
 
 ## API summary
 
@@ -184,6 +184,8 @@ Current coverage: point calculation logic (all 10 events + edge cases) and the s
 
 ## Dev log
 
+Claude (Anthropic's AI) was used throughout this project as an assistant — for planning and structuring the work, and for drafting this README from my own notes and code.
+
 **Thursday, 16.07.2026 — Planning and scaffolding.** Researched the decathlon scoring domain, used AI to draft an initial project plan, then reviewed it and locked the MVP/stretch scope against the actual task. Created a single GitHub repo with `/backend` and `/frontend` folders, cloned it locally, and generated the Spring Boot project (Web, JPA, Validation, PostgreSQL) directly inside `/backend`.
 
 **Friday, 17.07.2026 — Backend core.** Verified the generated backend built and ran (`./gradlew build`, `./gradlew bootRun`), got PostgreSQL running via `docker-compose up -d`, and pointed Spring Boot at it through `application.properties`. Committed the working skeleton as a baseline checkpoint, set up Claude Code as an assistant, created the initial package structure, and added the `DecathlonEvent` enum with the 10 fixed events.
@@ -203,3 +205,13 @@ Current coverage: point calculation logic (all 10 events + edge cases) and the s
 **Friday, 24.07.2026 — Frontend core.** Finished the form's remaining fields — the event dropdown (populated from the fetched event options) and the performance/date inputs — and verified in the browser that the dropdown correctly listed all 10 events and that each field updated its ref correctly. Decided on an emit-based submission architecture: the form builds the payload and emits it upward via `defineEmits`, rather than calling `axios` itself, keeping `App.vue` as the single place responsible for API calls. Wired up the emit and the corresponding `@submit.prevent` listener on both the form and its parent.
 
 **Sunday, 26.07.2026 — Make the frontend functional, push to GitHub.** Implemented `App.vue`'s `handleCreateResult` handler: added a `NewResult` type for the payload, made the function `async`, and wired the real `axios.post` call to the create endpoint. On success, the newly created result (returned directly in the response, already including its generated `id`/`points`/`unit`) is pushed straight into the existing results array rather than refetching, and the form closes. Wrapped the POST call in a `try/catch`, deciding to just log failures to the console for now rather than build a polished error UI — documented that trade-off explicitly in Future improvements. Added lightweight client-side validation using native HTML attributes: a dynamically computed max date (today, blocking future dates) and a `min="0.01"` on the performance input (blocking zero/negative values), as simpler alternatives to a full backend-error-driven validation UI. Pushed the current progress to GitHub.
+
+**Monday, 27.07.2026 — Friendly event labels (start).** Reviewed the point-calculation logic again to make sure it was solid. Started making the results table show friendly event labels ("100 m") instead of raw enum names (`RUN_100M`): passed the fetched events list down into `ResultsTable.vue` as a new prop (the same list already used by the form), and extended the table's `defineProps` to accept it, typed with the existing `EventOption` interface.
+
+**Tuesday, 28.07.2026 — Friendly event labels (finish).** Built a precomputed lookup object (a `Record<string, string>` mapping raw event key → display label) using `reduce`, so each table row does a plain object lookup rather than re-searching the array. Added a fallback (via a ternary) so a missing or not-yet-loaded label falls back to the raw key instead of rendering "undefined". Updated the table's event cell to use the lookup, and verified in the browser that rows now show friendly labels.
+
+**Wednesday, 29.07.2026 — Modal (start).** Began turning the result form into a centered modal over the page. Got a full-screen overlay showing and hiding correctly via the existing `showForm` toggle (`position: fixed` covering the whole viewport, above the page content via `z-index`), then added a semi-transparent dark dimming effect to the overlay.
+
+**Friday, 31.07.2026 — Modal (form inside).** Added a smaller, centered white box on top of the overlay (centered via flexbox on the overlay) and moved the real `<ResultForm>` into it, confirming it still renders and submits correctly. Started styling the form's own fields to stack top-to-bottom with consistent spacing.
+
+**Wednesday, 05.08.2026 — Close button, polish, README.** Added a close button to the form: declared a second `close` emit alongside `createResult`, wired the button's click to emit it, and had `App.vue` listen for it to hide the form. Styled the button — stripped the default browser button box and pinned it to the modal's top-right corner via absolute positioning (with `position: relative` on the modal as its reference frame). Updated the README and verified everything still runs via `docker-compose up --build`.

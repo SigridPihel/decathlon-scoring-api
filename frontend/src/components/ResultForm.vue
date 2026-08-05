@@ -116,7 +116,7 @@ form {
   top: 15px;
   right: 15px;
   position: absolute;
-  background-color: palevioletred;
+  background-color: lightgray;
   padding: 5px;
   border-radius: 15%;
   color: white;
