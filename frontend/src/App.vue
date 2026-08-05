@@ -95,6 +95,7 @@ button {
   background-color: white;
   width: 40%;
   border-radius: 15px;
+  position: relative;
 }
 
 </style>

@@ -41,9 +41,9 @@ function handleSubmit() {
 </script>
 
 <template>
+  <h2>Add Result</h2>
+  <button class="close" type="button" @click="emit('close')">X</button>
   <form @submit.prevent="handleSubmit">
-    <h2>Add Result</h2>
-    <button type="button" @click="emit('close')">X</button>
     <div class="form-element">
       <label for="name">Athlete's name: </label>
       <input type="text" id="name" v-model="athleteName" required>
@@ -107,5 +107,22 @@ form {
   grid-template-columns: auto 1fr;
   gap: 10px;
   padding: 10px;
+}
+
+
+.close {
+  all: unset;
+  cursor: pointer;
+  top: 15px;
+  right: 15px;
+  position: absolute;
+  background-color: palevioletred;
+  padding: 5px;
+  border-radius: 15%;
+  color: white;
+}
+
+h2 {
+  text-align: center;
 }
 </style>
