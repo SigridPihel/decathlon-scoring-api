@@ -43,7 +43,7 @@ onMounted(async() => {
 
     <div v-if="showForm" class="overlay">
       <div class="modal">
-        <ResultForm :events="events" @createResult="handleCreateResult" />
+        <ResultForm :events="events" @createResult="handleCreateResult" @close="toggleForm"/>
       </div>
     </div>
 
@@ -94,6 +94,7 @@ button {
 .modal {
   background-color: white;
   width: 40%;
+  border-radius: 15px;
 }
 
 </style>

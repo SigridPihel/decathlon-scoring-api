@@ -5,7 +5,7 @@ import {computed, ref} from "vue";
 
 const props = defineProps<{ events: Event[] }>()
 
-const emit = defineEmits(['createResult'])
+const emit = defineEmits(['createResult', 'close'])
 
 const athleteName = ref<string>('')
 const event = ref<string>('')
@@ -42,43 +42,55 @@ function handleSubmit() {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <label for="name">Athlete's name: </label>
-    <input type="text" id="name" v-model="athleteName" required>
+    <h2>Add Result</h2>
+    <button type="button" @click="emit('close')">X</button>
+    <div class="form-element">
+      <label for="name">Athlete's name: </label>
+      <input type="text" id="name" v-model="athleteName" required>
+    </div>
 
-    <label for="events">Selected: </label>
-    <select name="events" id="events" v-model="event" required>
-      <option disabled value="">Select event</option>
-      <option
-          v-for="eventOption in events"
-          :key="eventOption.event"
-          :value="eventOption.event"
+    <div class="form-element">
+      <label for="events">Selected: </label>
+      <select name="events" id="events" v-model="event" required>
+        <option disabled value="">Select event</option>
+        <option
+            v-for="eventOption in events"
+            :key="eventOption.event"
+            :value="eventOption.event"
+        >
+          {{ eventOption.displayName }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-element">
+      <label for="performanceValue">Score: </label>
+      <input
+          type="number"
+          id="performanceValue"
+          step="any"
+          :placeholder="placeHolderText"
+          v-model="performanceValue"
+          required
+          min="0.01"
       >
-        {{ eventOption.displayName }}
-      </option>
-    </select>
+    </div>
 
-    <label for="performanceValue">Score: </label>
-    <input
-        type="number"
-        id="performanceValue"
-        step="any"
-        :placeholder="placeHolderText"
-        v-model="performanceValue"
-        required
-        min="0.01"
-    >
+    <div class="form-element">
+      <label for="date">Date:</label>
+      <input
+          type="date"
+          id="date"
+          name="date"
+          v-model="resultDate"
+          required
+          :max="todayDate"
+      >
+    </div>
 
-    <label for="date">Date:</label>
-    <input
-        type="date"
-        id="date"
-        name="date"
-        v-model="resultDate"
-        required
-        :max="todayDate"
-    >
-
-    <input type="submit" value="Submit">
+    <div class="form-element submit">
+      <input type="submit" value="Submit">
+    </div>
   </form>
 </template>
 
@@ -86,6 +98,14 @@ function handleSubmit() {
 form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin: 10px;
 }
 
+.form-element {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  padding: 10px;
+}
 </style>
